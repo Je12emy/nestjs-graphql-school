@@ -28,4 +28,14 @@ export class StudentService {
   async getStudentById(id: string): Promise<Student> {
     return await this.studentRepository.findOne({ id });
   }
+
+  async getManyStudents(studentIds: string[]): Promise<Student[]> {
+    return await this.studentRepository.find({
+      where: {
+        id: {
+          $in: studentIds,
+        },
+      },
+    }); // This is a mongodb anotation for finding something
+  }
 }

@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { Lesson } from './lesson.entity';
 import { v4 as uuid } from 'uuid';
 import { CreateLessonInput } from './lesson.input';
-import { Parent, ResolveField } from '@nestjs/graphql';
 
 @Injectable()
 export class LessonService {
