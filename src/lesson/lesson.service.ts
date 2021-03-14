@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Lesson } from './lesson.entity';
 import { v4 as uuid } from 'uuid';
 import { CreateLessonInput } from './lesson.input';
+import { Parent, ResolveField } from '@nestjs/graphql';
 
 @Injectable()
 export class LessonService {
@@ -12,13 +13,14 @@ export class LessonService {
   ) {}
 
   async createLesson(createLessonInput: CreateLessonInput): Promise<Lesson> {
-    const { name, endDate, startDate } = createLessonInput;
+    const { name, endDate, startDate, students } = createLessonInput;
 
     const lesson = this.lessonRepository.create({
       id: uuid(),
       name,
       startDate,
       endDate,
+      students,
     });
 
     return await this.lessonRepository.save(lesson);
@@ -28,5 +30,14 @@ export class LessonService {
   }
   async getAllLessons(): Promise<Lesson[]> {
     return await this.lessonRepository.find();
+  }
+
+  async assignStudentsToLesson(
+    lessonId: string,
+    studentsIds: string[],
+  ): Promise<Lesson> {
+    const lesson = await this.lessonRepository.findOne({ id: lessonId });
+    lesson.students = [...lesson.students, ...studentsIds];
+    return this.lessonRepository.save(lesson);
   }
 }
