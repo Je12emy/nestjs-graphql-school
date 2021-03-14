@@ -2,7 +2,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType('Lesson') // Name this type
 export class LessonType {
-  // Graphql can dedece the ts types
+  // Graphql can deduce the ts types
   @Field((type) => ID)
   id: string;
 
